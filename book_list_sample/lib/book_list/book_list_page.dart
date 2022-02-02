@@ -51,16 +51,16 @@ class BookListPage extends StatelessWidget {
                             }
                             model.fetchBookList();
                           },
-                          backgroundColor: Color(0xFF7BC043),
+                          backgroundColor: Colors.grey,
                           foregroundColor: Colors.white,
                           icon: Icons.edit,
                           label: '編集',
                         ),
                         SlidableAction(
-                          onPressed: null,
-                          // 削除しますか？って聞いて、はいだったら削除
-
-                          backgroundColor: Color(0xFF0392CF),
+                          onPressed: (_) async {
+                            showConfirmDialog(context, book, model);
+                          },
+                          backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
                           icon: Icons.delete,
                           label: '削除',
@@ -100,4 +100,39 @@ class BookListPage extends StatelessWidget {
       ),
     );
   }
+
+  Future showConfirmDialog(BuildContext context, Book book, BookListModel model) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return AlertDialog(
+          title: Text("削除の確認"),
+          content: Text("『${book.title}』を削除しますか？"),
+          actions: [
+            TextButton(
+              child: Text("いいえ"),
+              onPressed: () => Navigator.pop(context),
+            ),
+            TextButton(
+              child: Text("はい"),
+              onPressed: () async {
+                // modelで削除
+                await model.delete(book);
+                Navigator.pop(context);
+                final snackBar = SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text('${book.title}を削除しました。'));
+                model.fetchBookList();
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(snackBar);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
+
