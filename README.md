@@ -2,7 +2,7 @@
 FlutterでFirebaseを使ってみる。
 
 ## 機能
-- Firebase　Cloud Firestoreに登録した本データを一覧表示
+- Cloud Firestoreに登録した本データを一覧表示
 - 追加 / 編集 / 削除
 
 ## 参考
