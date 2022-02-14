@@ -2,6 +2,7 @@ import 'package:book_list_sample/add_book/add_book_page.dart';
 import 'package:book_list_sample/book_list/book_list_model.dart';
 import 'package:book_list_sample/domain/book.dart';
 import 'package:book_list_sample/edit_book/edit_book_page.dart';
+import 'package:book_list_sample/login/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,23 @@ class BookListPage extends StatelessWidget {
     return ChangeNotifierProvider<BookListModel>(
       create: (_) => BookListModel()..fetchBookList(),
       child: Scaffold(
-        appBar: AppBar(title: Text('本一覧')),
+        appBar: AppBar(
+          title: Text('本一覧'),
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  //画面遷移
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                      fullscreenDialog: true,
+                    ),
+                  );
+
+            }, icon: Icon(Icons.person))
+          ],
+        ),
         body: Center(
           child: Consumer<BookListModel>(builder: (context, model, child) {
             final List<Book>? books = model.books;
