@@ -3,7 +3,9 @@ import 'package:book_list_sample/book_list/book_list_model.dart';
 import 'package:book_list_sample/domain/book.dart';
 import 'package:book_list_sample/edit_book/edit_book_page.dart';
 import 'package:book_list_sample/login/login_page.dart';
+import 'package:book_list_sample/mypage/my_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,14 +22,25 @@ class BookListPage extends StatelessWidget {
             IconButton(
                 onPressed: () async {
                   //画面遷移
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
-                      fullscreenDialog: true,
-                    ),
-                  );
-
+                  if (FirebaseAuth.instance.currentUser != null) {
+                    print('ログインしている');
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyPage(),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  } else {
+                    print('ログインしていない');
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  }
             }, icon: Icon(Icons.person))
           ],
         ),
